@@ -17,15 +17,15 @@
 @endphp --}}
 @section('contenido')
 
-  <div class="card-body">  
-   <div class="row"> 
-    <div class="col sm-12"> 
+  <div class="card-body">
+   <div class="row">
+    <div class="col sm-12">
       @if ($mensaje = Session::get('success') )
          <div class="alert alert-warning alert-dismissible fade show" role="alert">
            {{$mensaje}}
       </div>
       @endif
-      
+
      </div>
    </div>
   </div>
@@ -37,7 +37,7 @@
       </div>
   </div>
     {{-- <h5 class="card-title text-center">/h5> <br> --}}
-    <div class="table table-responsive"> 
+    <div class="table table-responsive">
       <table class="table table-hover">
       <thead>
         <th scope="col">ID </th>
@@ -50,26 +50,26 @@
         <th scope="col">Eliminar </th>
       </thead>
       <tbody>
-        
-        @foreach ($datos as $item)        
+
+        @foreach ($datos as $item)
         <tr>
            <th scope="row">{{$item->id}} </th>
            <td>{{$item->nombre}} </td>
            <td>{{$item->paterno}} </td>
            <td>{{$item->materno}} </td>
            <td>{{$item->fecha_nacimiento}} </td>
-           
+
            @foreach ($telefonos as $numero)
             @if($item->id==$numero->id_per)
                <td>{{$numero->telefono}} </td>
                {{var_dump($loop)}}
              @endif
-       
+
            @endforeach
            <td>
-              <form action="{{route("personas.edit", [$item->id,$telefonos])}}" method="GET">
+              <form action="{{route("personas.edit", [$item->id])}}" method="GET">
                 <button class="btn btn-warning btn-sm">
-                  <spam class="fas fa-user-edit fa-lg"></spam> 
+                  <spam class="fas fa-user-edit fa-lg"></spam>
                 </button>
               </form>
            </td>
@@ -77,21 +77,21 @@
            <td>
             <form action="{{route("personas.show", $item->id)}}" method="GET">
               <button class="btn btn-danger btn-sm">
-                <spam class="fas fa-user-times fa-lg"></spam> 
+                <spam class="fas fa-user-times fa-lg"></spam>
               </button>
             </form>
          </td>
         </tr>
         @endforeach
      </tbody>
-     
+
     </table>
     <hr>
   </div>
     <div class="row">
       <div class="col-sm-12">
         {{-- //{{$datos->links()}} --}}
-      </div> 
+      </div>
     </div>
 </div>
 @endsection

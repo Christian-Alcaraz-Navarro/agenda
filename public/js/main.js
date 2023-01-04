@@ -12,16 +12,24 @@ let total = 1;
  */
 btnAgregar.addEventListener('click', e => {
     let div = document.createElement('div');
-    div.innerHTML = ` <label>${total++}</label> : <input type="text" id="telefono[]" name="telefono[]" placeholder="TELEFONO" required >
+    div.innerHTML = ` <label>${total++}</label> : <input onkeyup="obtnerTelefonos()" type="text" id="telefono[]" name="telefono[]" placeholder="TELEFONO" required >
 
     <button class="btn btn-danger" onclick="eliminar(this)">Eliminar </button><br></br> `;
 
     contenedor.appendChild(div);
-    var values = $("input[name='telefono[]']")
-              .map(function(){return $(this).val();}).get();
-    console.log(values);
 
 })
+
+/*Funcion para obtner los numero cada que se oprime una tecla en el input id=telefono */
+function obtnerTelefonos(){
+    //Obtner valaroes de todos los inputs name='telefono[]'
+    var values = $("input[name='telefono[]']")
+              .map(function(){return $(this).val();}).get();
+    //Crear una cadena de texto con los numeros de los inputs id=telefono y separarlos con una coma
+    var txtTelefonos = values.toString();
+    //Asignamos mediante Jquery la cadena de texto al input del formulario agregar persona para enviar al back
+    $("#telefonos").val(txtTelefonos);
+}
 
 /**
  * Método para eliminar el div contenedor del input
