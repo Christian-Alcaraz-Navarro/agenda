@@ -60,9 +60,8 @@
            <td>{{$item->fecha_nacimiento}} </td>
 
            @foreach ($telefonos as $numero)
-            @if($item->id==$numero->id_per)
-               <td>{{$numero->telefono}} </td>
-               {{var_dump($loop)}}
+            @if($item->id==$numero->id_persona)
+               <td>Tel. {{ $loop->index }}: {{$numero->telefono}} </td>
              @endif
 
            @endforeach
