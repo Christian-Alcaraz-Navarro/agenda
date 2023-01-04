@@ -12,20 +12,20 @@ let total = 1;
  */
 btnAgregar.addEventListener('click', e => {
     let div = document.createElement('div');
-    div.innerHTML = ` <label>${total++}</label> : <input type="text" id="telefono[]" name="telefono[]" placeholder="TELEFONO" required > 
-   
+    div.innerHTML = ` <label>${total++}</label> : <input type="text" id="telefono[]" name="telefono[]" placeholder="TELEFONO" required >
+
     <button class="btn btn-danger" onclick="eliminar(this)">Eliminar </button><br></br> `;
-        
+
     contenedor.appendChild(div);
-    var numeros;
-    numeros=document.getElementById("telefono[]");
-    console.log(numeros.value);   
+    var values = $("input[name='telefono[]']")
+              .map(function(){return $(this).val();}).get();
+    console.log(values);
 
 })
 
 /**
  * Método para eliminar el div contenedor del input
- * @param {this} e 
+ * @param {this} e
  */
 const eliminar = (e) => {
     const divPadre = e.parentNode;
@@ -43,5 +43,5 @@ const actualizarContador = () => {
     for (let i = 0; i < divs.length; i++) {
         divs[i].children[0].innerHTML = total++;
     }//end for
-    
+
 };
