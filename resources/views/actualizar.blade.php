@@ -14,11 +14,20 @@
     </div>
   </div>
       <p class="card-text">
-        <form action="{{route('personas.update',$personas->id)}}" method="POST">
+        <form action="{{route('personas.update', ['Personas->id'])}}" method="POST">
+          
           @csrf
           @method("PUT")
 
+          <p class="card-text">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Estas actualizando el registro # {{$personas->id}}</strong> Estas seguro que no la vas a regar?????.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </p>
+     
           <div class="row">
+            
             <div class="col-8">
               <label for="">Nombre </label>
               <input type="text" name="nombre" class="form-control" required value="{{$personas->nombre}}">
@@ -26,42 +35,29 @@
             </div>
 
             <div class="col-8">
-              <label for="" class="label ma">Apellido paterno </label>
-              <input type="text" name="paterno" class="form-control" required required value="{{$personas->paterno}}">
+              <label for="">Apellido paterno </label>
+              <input type="text" name="paterno" class="form-control" required  value="{{$personas->paterno}}">
               <br>
             </div>
 
             <div class="col-8">
               <label for="">Apellido materno </label>
-              <input type="text" name="materno" class="form-control" required required value="{{$personas->materno}}">
+              <input type="text" name="materno" class="form-control" required  value="{{$personas->materno}}">
               <br>
             </div>
 
             <div class="col-10">
               <label for="">Fecha de nacimiento </label>
-              <input type="date" name="fecha_nacimiento" class="form-control" required required value="{{$personas->fecha_nacimiento}}">
+              <input type="date" name="fecha_nacimiento" class="form-control" required value="{{$personas->fecha_nacimiento}}">
               <br>
             </div>
 
             <div class="col-4">
-              <label for="">Tel 1 </label>
-              <input type="tel" name="Telefono_1" class="form-control" required required value="{{$personas->fecha_nacimiento}}">
+              <label for="">Telefono </label>
+              {{-- {{$telefonos->id}} --}}
+              <input type="tel" name="Telefono" class="form-control" required value="{{$telefonos}}">
               <br>
             </div>
-
-            <div class="col-4">
-              <label for="">Tel 2 </label>
-              <input type="tel" name="Telefono_2" class="form-control" required required value="{{$personas->fecha_nacimiento}}">
-              <br>
-            </div>
-
-            <div class="col-4">
-              <label for="">Tel 3 </label>
-              <input type="tel" name="Telefono_3" class="form-control" required required value="{{$personas->fecha_nacimiento}}">
-              <br>
-            </div>
-
-
 
             </div>
             <br>

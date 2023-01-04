@@ -14,11 +14,12 @@ class CreateTelefonosTable extends Migration
     public function up()
     {
         Schema::create('telefonos', function (Blueprint $table) {
+           // Schema::dropIfExists('telefonos');
             $table->engine = 'InnoDB';
-            $table->increments('id_telefono');
-            $table->string('telefono_1');
-            $table->string('telefono_2');
-            $table->string('telefono_3');
+
+            $table->bigincrements('id_per')->unsigned();           
+            $table->foreign('id_per')->references('id')->on('personas');
+            $table->string('telefono')->nullable();
             $table->timestamps();
         });
 
@@ -34,3 +35,6 @@ class CreateTelefonosTable extends Migration
         Schema::dropIfExists('telefonos');
     }
 }
+
+
+

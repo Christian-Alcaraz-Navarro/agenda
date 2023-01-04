@@ -45,13 +45,12 @@
         <th scope="col">Apellido paterno </th>
         <th scope="col">Apellido Materno </th>
         <th scope="col">Fecha de nacimiento </th>
-        <th scope="col">Tel 1 </th>
-        <th scope="col">Tel 2 </th>
-        <th scope="col">Tel 3 </th>
+        <th scope="col">Telefono</th>
         <th scope="col">Editar </th>
         <th scope="col">Eliminar </th>
       </thead>
       <tbody>
+        
         @foreach ($datos as $item)        
         <tr>
            <th scope="row">{{$item->id}} </th>
@@ -59,12 +58,16 @@
            <td>{{$item->paterno}} </td>
            <td>{{$item->materno}} </td>
            <td>{{$item->fecha_nacimiento}} </td>
-
-           <td>{{$item->telefono1}} </td>
-           <td>{{$item->telefono2}} </td>
-           <td>{{$item->telefono3}} </td>
+           
+           @foreach ($telefonos as $numero)
+            @if($item->id==$numero->id_per)
+               <td>{{$numero->telefono}} </td>
+               {{var_dump($loop)}}
+             @endif
+       
+           @endforeach
            <td>
-              <form action="{{route("personas.edit", $item->id)}}" method="GET">
+              <form action="{{route("personas.edit", [$item->id,$telefonos])}}" method="GET">
                 <button class="btn btn-warning btn-sm">
                   <spam class="fas fa-user-edit fa-lg"></spam> 
                 </button>
@@ -87,7 +90,7 @@
   </div>
     <div class="row">
       <div class="col-sm-12">
-        {{$datos->links()}}
+        {{-- //{{$datos->links()}} --}}
       </div> 
     </div>
 </div>

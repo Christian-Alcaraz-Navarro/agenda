@@ -9,9 +9,9 @@ Route::get('/crear',[PersonasController::class,'create'])->name('personas.create
 
 Route::post('/guardar',[PersonasController::class,'store'])->name('personas.guardar');
 
-Route::get('/editar/{id}',[PersonasController::class,'edit'])->name('personas.edit');
+Route::get('/{id}//editar',[PersonasController::class,'edit'])->name('personas.edit');
 
-Route::put('/update/{id}',[PersonasController::class,'update'])->name('personas.update');
+Route::put('/{id}/update',[PersonasController::class,'update'])->name('personas.update');
 
 Route::get('/eliminar/{id}',[PersonasController::class,'show'])->name('personas.show');
 

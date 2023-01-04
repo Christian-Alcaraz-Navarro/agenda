@@ -13,15 +13,14 @@ class CreatePersonasTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('personas', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->id();
+           // Schema::dropIfExists('personas');
+           $table->bigincrements('id')->unsigned();  
             $table->string('nombre');
             $table->string('paterno');
             $table->string('materno');
             $table->date('fecha_nacimiento');
-            $table->integer('id_telefono')->unsigned(); 
-            $table->foreign('id_telefono')->references('id_telefono')->on('telefonos');
             $table->timestamps();
 
         });
@@ -37,3 +36,5 @@ class CreatePersonasTable extends Migration
         Schema::dropIfExists('personas');
     }
 }
+
+

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Personas;
+use App\Models\telefonos;
 use Illuminate\Http\Request;
 
 class PersonasController extends Controller
@@ -14,10 +15,10 @@ class PersonasController extends Controller
      */
     public function index()
     {
-        // \DB::enableQueryLog();
-        $datos= Personas::orderBy('paterno','asc')->paginate(3);
-        // $query = \DB::getQueryLog();
-        return view('inicio',compact('datos'));
+        
+        $datos= Personas::all();
+        $telefonos= telefonos::all();
+        return view('inicio',compact('datos','telefonos'));
     }
 
     /**
@@ -39,26 +40,33 @@ class PersonasController extends Controller
     public function store(Request $request)
     {
         $personas= new personas();
+        $personas->id = $request->post('id');
         $personas->nombre = $request->post('nombre');
         $personas->paterno = $request->post('paterno');
         $personas->materno = $request->post('materno');
         $personas->fecha_nacimiento = $request->post('fecha_nacimiento');
-
-        $id_telefono->integer('category_id')->unsigned();
-            $personas->foreign('category_id')->references('id')->on('categories');
-
-
-        $personas->id_telefono = $request->post('id_telefono');
-
         $personas->save();
+
+        $telefonos = $request->telefono;
+        logger($request->all());
+        $tel_input = $request->post('telefono');
+        foreach ($request->post('telefono',[]) as $valor) { 
+            $registrar = new telefonos();
+            $registrar->telefono = $tel_input[$valor];
+            $registrar->save();   
+            // print_r($telefono->telefono);
+            
+            return redirect()->route("inicio")->with("success","Agregado con exito");
+        }
+        
         return redirect()->route("personas.index")->with("success","Agregado con exito");
-        // print_r($_POST);
+        
     }
 
     /**
 
      *
-     * @param  \App\Models\Personas  $personas
+     * @param  \App\Models\Personas  $telefonos
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -70,33 +78,46 @@ class PersonasController extends Controller
     /**
      *
      * @param  \App\Models\Personas  $personas
+     * @param  \App\Models\Telefonos  $telefonos
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+
+    // public function edit($id)
+    // {
+
+    //     return view('actualizar',compact('personas','telefonos'));
+    // }
+    public function edit( $id)
     {
-        $personas= Personas::find($id);
-         return view('actualizar',compact('personas'));
+         $personas= Personas::find($id);
+       
+        $telefonos = telefonos::select('telefono')->where('id_per',$id)->get();
+       // $telefonos= telefonos::find($id2);
+        return view('actualizar',compact('personas','telefonos'));
     }
+    
+
 
     /**
      
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Personas  $personas
+     * @param  \App\Models\Telefonos  $telefonos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Personas $persona, telefonos $telefono)
     {
-        $personas = personas::find($id);
-
-        $personas->nombre = $request->post('nombre');
-        $personas->paterno = $request->post('paterno');
-        $personas->materno = $request->post('materno');
-        $personas->fecha_nacimiento = $request->post('fecha_nacimiento');
-        $personas->save();
+        $persona->nombre = $request->input('nombre');
+        $persona->paterno = $request->input('paterno');
+        $persona->materno = $request->input('materno');
+        $persona->fecha_nacimiento = $request->input('fecha_nacimiento');
+        
+        $telefono->telefono = $request->input('telefono');
+        $persona->save();
+        $telefono->save();
 
         return redirect()->route("personas.index")->with("success","Actualizado con exito");
-        // print_r($_POST);
     }
 
     /**
@@ -113,3 +134,5 @@ class PersonasController extends Controller
         return redirect()->route("personas.index")->with("success","Eliminadocon exito");
     }
 }
+
+
