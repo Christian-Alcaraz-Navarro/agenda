@@ -5,27 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class personas extends Model
+class Personas extends Model
 {
-    use HasFactory;
+    
+    public function telefonos()
+    {
+     //user profile es tabla padre y user id nombre del campo de llave foranea
+        return $this->hasMany(Telefonos::class,'id_persona');
+        
+    }
+    protected $fillable = ['telefono'];
 }
-
-// namespace App\Models;
-
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\Model;
-
-// class personas extends Model
-// {
-//     use HasFactory;
-// }
-
-
-// class personas extends Model
-// {
-//     use HasFactory; 
-//     public function telefonos()
-//     {
-//         return $this->hasMany('telefonos');
-//     }
-// };

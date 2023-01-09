@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Personas;
-use App\Models\telefonos;
+use App\Models\Telefonos;
 use Illuminate\Http\Request;
 
-class PersonasController extends Controller
+class PersonaController extends Controller
 {
     /**
 
@@ -16,9 +16,13 @@ class PersonasController extends Controller
     public function index()
     {
 
-        $datos= Personas::all();
-        $telefonos= telefonos::all();
-        return view('inicio',compact('datos','telefonos'));
+        $personas= Personas::all();
+        $telefonos= Telefonos::all();
+        // $idPersona = 1;
+        // $telefonosPersona = Personas::with('telefonos')->where('id',$idPersona)->get();
+        
+        // logger($telefonosPersona);
+        return view('inicio',compact('personas','telefonos'));
     }
 
     /**
@@ -45,8 +49,8 @@ class PersonasController extends Controller
         if ($request->telefonos != null && $request->telefonos != null) {
             $arrayTelfonos = explode(",", $request->telefonos);//Explode es una funcion predefinida de php que permite crear array a partir de una cadena pasandole un un separador y la cadena ver documentacion
         }
-
-        $personas= new personas();  //TODO: Recuerda que un modelo simpre va en singular y con mayuscula la primera porque es una Clase de PHP corrigelo
+        logger($request->telefonos); 
+        $personas= new Personas();  //TODO: Recuerda que un modelo simpre va en singular y con mayuscula la primera porque es una Clase de PHP corrigelo
         $personas->id = $request->post('id');
         $personas->nombre = $request->post('nombre');
         $personas->paterno = $request->post('paterno');
@@ -58,7 +62,7 @@ class PersonasController extends Controller
 
         //iterar $arrayTelfonos y hacer un incert por cada valor en el array y guardar en telfonos
         foreach ($arrayTelfonos as $key => $telefono) {
-            $telefonos = new telefonos();//TODO: Corregir modelo Telefono
+            $telefonos = new Telefonos();//TODO: Corregir modelo Telefono
             $telefonos->id_persona = $id;
             $telefonos->telefono = $telefono;
             $telefonos->save();
@@ -89,21 +93,17 @@ class PersonasController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function edit($id)
-    // {
-
-    //     return view('actualizar',compact('personas','telefonos'));
-    // }
-    public function edit( $id)
+ 
+    public function edit($id,Request $request)
     {
-         $personas= Personas::find($id);
-
-        $telefonos = telefonos::select('telefono')->where('id_per',$id)->get();
-       // $telefonos= telefonos::find($id2);
-        return view('actualizar',compact('personas','telefonos'));
+        $personas= Personas::with('telefonos')->where('id',$id)->first();
+        $arrayTelfonos = [];//Definimos var tipo array
+        //Validamos que el campo telefonos contenga valores y si contiene creamos array por telefono separandolo por comos
+        if ($request->telefonos != null && $request->telefonos != null) {
+            logger($arrayTelfonos = explode(",", $request->telefonos));//Explode es una funcion predefinida de php que permite crear array a partir de una cadena pasandole un un separador y la cadena ver documentacion
+        }
+        return view('actualizar',compact('personas','arrayTelfonos'));
     }
-
-
 
     /**
 
@@ -113,16 +113,28 @@ class PersonasController extends Controller
      * @param  \App\Models\Telefonos  $telefonos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Personas $persona, telefonos $telefono)
+    public function update(Request $request,Personas $persona, $arrayTelfonos)
     {
+
         $persona->nombre = $request->input('nombre');
         $persona->paterno = $request->input('paterno');
         $persona->materno = $request->input('materno');
         $persona->fecha_nacimiento = $request->input('fecha_nacimiento');
 
-        $telefono->telefono = $request->input('telefono');
+        logger($arrayTelf = explode(",", $arrayTelfonos));
+
+        $personas= new Personas();  //TODO: Recuerda que un modelo simpre va en singular y con mayuscula la primera porque es una Clase de PHP corrigelo
+        $id=$persona->id ;
+        
+
+        foreach ($arrayTelf as $key => $telefono) {
+            $telefonos= new Telefonos();
+            $telefonos->id_persona = $id;
+            $telefonos->telefono =$telefono;
+            $telefonos->save();
+        }
+        
         $persona->save();
-        $telefono->save();
 
         return redirect()->route("personas.index")->with("success","Actualizado con exito");
     }
@@ -135,11 +147,12 @@ class PersonasController extends Controller
      */
     public function destroy($id)
     {
-        $personas = personas::find($id);
+        $personas = Personas::find($id);
         $personas->delete();
 
-        return redirect()->route("personas.index")->with("success","Eliminadocon exito");
+        return redirect()->route("personas.index")->with("success","Eliminado con exito");
     }
 }
+
 
 

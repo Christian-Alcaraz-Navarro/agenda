@@ -1,5 +1,7 @@
 
 
+
+
 // Constantes para el div contenedor de los inputs y el botón de agregar
 const contenedor = document.querySelector('#dinamic');
 const btnAgregar = document.querySelector('#agregar');
@@ -12,9 +14,8 @@ let total = 1;
  */
 btnAgregar.addEventListener('click', e => {
     let div = document.createElement('div');
-    div.innerHTML = ` <label>${total++}</label> : <input onkeyup="obtnerTelefonos()" type="text" id="telefono[]" name="telefono[]" placeholder="TELEFONO" required >
-
-    <button class="btn btn-danger" onclick="eliminar(this)">Eliminar </button><br></br> `;
+    div.innerHTML = `<label>${total++}</label> <input class="form-control col-sm-5" onkeyup="obtnerTelefonos()" type="text" id="telefonos[]" name="telefonos[]" placeholder="TELEFONO" required >
+    <button class="btn btn-danger" onclick="eliminar(this)">Eliminar </button> `;
 
     contenedor.appendChild(div);
 
@@ -23,7 +24,7 @@ btnAgregar.addEventListener('click', e => {
 /*Funcion para obtner los numero cada que se oprime una tecla en el input id=telefono */
 function obtnerTelefonos(){
     //Obtner valaroes de todos los inputs name='telefono[]'
-    var values = $("input[name='telefono[]']")
+    var values = $("input[name='telefonos[]']")
               .map(function(){return $(this).val();}).get();
     //Crear una cadena de texto con los numeros de los inputs id=telefono y separarlos con una coma
     var txtTelefonos = values.toString();
@@ -38,7 +39,6 @@ function obtnerTelefonos(){
 const eliminar = (e) => {
     const divPadre = e.parentNode;
     contenedor.removeChild(divPadre);
-    total=total;
     actualizarContador();
 };
 
