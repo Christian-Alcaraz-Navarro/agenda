@@ -49,8 +49,8 @@ class PersonaController extends Controller
         if ($request->telefonos != null && $request->telefonos != null) {
             $arrayTelfonos = explode(",", $request->telefonos);//Explode es una funcion predefinida de php que permite crear array a partir de una cadena pasandole un un separador y la cadena ver documentacion
         }
-        logger($request->telefonos); 
-        $personas= new Personas();  //TODO: Recuerda que un modelo simpre va en singular y con mayuscula la primera porque es una Clase de PHP corrigelo
+
+        $personas= new personas();  //TODO: Recuerda que un modelo simpre va en singular y con mayuscula la primera porque es una Clase de PHP corrigelo
         $personas->id = $request->post('id');
         $personas->nombre = $request->post('nombre');
         $personas->paterno = $request->post('paterno');
@@ -58,11 +58,12 @@ class PersonaController extends Controller
         $personas->fecha_nacimiento = $request->post('fecha_nacimiento');
         $personas->save();
         //Obtner el id del modelo que se inserto
+        $personas->id = $request->post('id');
         $id = $personas->id;
 
         //iterar $arrayTelfonos y hacer un incert por cada valor en el array y guardar en telfonos
         foreach ($arrayTelfonos as $key => $telefono) {
-            $telefonos = new Telefonos();//TODO: Corregir modelo Telefono
+            $telefonos = new telefonos();//TODO: Corregir modelo Telefono
             $telefonos->id_persona = $id;
             $telefonos->telefono = $telefono;
             $telefonos->save();
@@ -99,10 +100,10 @@ class PersonaController extends Controller
         $personas= Personas::with('telefonos')->where('id',$id)->first();
         $arrayTelfonos = [];//Definimos var tipo array
         //Validamos que el campo telefonos contenga valores y si contiene creamos array por telefono separandolo por comos
-        if ($request->telefonos != null && $request->telefonos != null) {
-            logger($arrayTelfonos = explode(",", $request->telefonos));//Explode es una funcion predefinida de php que permite crear array a partir de una cadena pasandole un un separador y la cadena ver documentacion
-        }
-        return view('actualizar',compact('personas','arrayTelfonos'));
+        // if ($request->telefonos != null && $request->telefonos != null) {
+        //     logger($arrayTelfonos = explode(",", $request->telefonos));//Explode es una funcion predefinida de php que permite crear array a partir de una cadena pasandole un un separador y la cadena ver documentacion
+        // }
+        return view('actualizar',compact('personas'));
     }
 
     /**
@@ -113,28 +114,27 @@ class PersonaController extends Controller
      * @param  \App\Models\Telefonos  $telefonos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Personas $persona, $arrayTelfonos)
+    public function update(Request $request,Personas $persona)
     {
-
+        $id = $request->post('id');
+        // $persona= Personas::with('telefonos')->where('id',$id)->first();
         $persona->nombre = $request->input('nombre');
         $persona->paterno = $request->input('paterno');
         $persona->materno = $request->input('materno');
         $persona->fecha_nacimiento = $request->input('fecha_nacimiento');
-
-        logger($arrayTelf = explode(",", $arrayTelfonos));
-
-        $personas= new Personas();  //TODO: Recuerda que un modelo simpre va en singular y con mayuscula la primera porque es una Clase de PHP corrigelo
-        $id=$persona->id ;
+        $persona->save();
+        $arrayTelf = explode(",",$request->telefonos);
         
 
         foreach ($arrayTelf as $key => $telefono) {
             $telefonos= new Telefonos();
             $telefonos->id_persona = $id;
-            $telefonos->telefono =$telefono;
+            logger($telefonos->telefono =$telefono);
             $telefonos->save();
         }
         
-        $persona->save();
+        
+        // $persona->telefonos->detach();
 
         return redirect()->route("personas.index")->with("success","Actualizado con exito");
     }
