@@ -1,19 +1,19 @@
 <?php
 
-use App\Http\Controllers\PersonasController;
+use App\Http\Controllers\PersonaController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',[PersonasController::class,'index'])->name('personas.index');
+Route::get('/',[PersonaController::class,'index'])->name('personas.index');
 
-Route::get('/crear',[PersonasController::class,'create'])->name('personas.create');
+Route::get('/crear',[PersonaController::class,'create'])->name('personas.create');
 
-Route::post('/guardar',[PersonasController::class,'store'])->name('personas.guardar');
+Route::post('/guardar',[PersonaController::class,'store'])->name('personas.guardar');
 
-Route::get('/{id}//editar',[PersonasController::class,'edit'])->name('personas.edit');
+Route::get('/{id}/editar',[PersonaController::class,'edit'])->name('personas.edit');
 
-Route::put('/{id}/update',[PersonasController::class,'update'])->name('personas.update');
+Route::put('/{id}/update',[PersonaController::class,'update'])->name('personas.update');
 
-Route::get('/eliminar/{id}',[PersonasController::class,'show'])->name('personas.show');
+Route::get('/eliminar/{id}',[PersonaController::class,'show'])->name('personas.show');
 
-Route::delete('/destroy/{id}',[PersonasController::class,'destroy'])->name('personas.destroy');
+Route::delete('/destroy/{id}',[PersonaController::class,'destroy'])->name('personas.destroy');
 

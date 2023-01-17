@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Personas;
-use App\Models\telefonos;
+use App\Models\Telefonos;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Type\Integer;
 
-class PersonasController extends Controller
+class PersonaController extends Controller
 {
     /**
 
@@ -15,10 +16,14 @@ class PersonasController extends Controller
      */
     public function index()
     {
-
-        $datos= Personas::all();
-        $telefonos= telefonos::all();
-        return view('inicio',compact('datos','telefonos'));
+        $personas= Personas::all();
+        $telefonos = Telefonos::all('id_persona','telefono');
+        //$maximot=Telefonos::groupBy('id_persona')->count('id_persona')->orderby('id_persona','desc');
+        $colleccion = Telefonos::selectRaw('COUNT(`id_persona`) AS total, id_persona')->groupBy('id_persona')->orderBy('total','desc')->first();
+        $maximot=0;
+        if (isset($colleccion->total)) 
+            $maximot = $colleccion->total;              
+        return view('inicio',compact('personas','telefonos','maximot'));
     }
 
     /**
@@ -55,7 +60,6 @@ class PersonasController extends Controller
         $personas->save();
         //Obtner el id del modelo que se inserto
         $id = $personas->id;
-
         //iterar $arrayTelfonos y hacer un incert por cada valor en el array y guardar en telfonos
         foreach ($arrayTelfonos as $key => $telefono) {
             $telefonos = new telefonos();//TODO: Corregir modelo Telefono
@@ -89,21 +93,12 @@ class PersonasController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function edit($id)
-    // {
-
-    //     return view('actualizar',compact('personas','telefonos'));
-    // }
-    public function edit( $id)
+ 
+    public function edit($id)
     {
-         $personas= Personas::find($id);
-
-        $telefonos = telefonos::select('telefono')->where('id_per',$id)->get();
-       // $telefonos= telefonos::find($id2);
-        return view('actualizar',compact('personas','telefonos'));
+        $personas= Personas::with('telefonos')->where('id',$id)->first();
+        return view('actualizar',compact('personas'));
     }
-
-
 
     /**
 
@@ -113,17 +108,25 @@ class PersonasController extends Controller
      * @param  \App\Models\Telefonos  $telefonos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Personas $persona, telefonos $telefono)
+    public function update($id,Request $request)
     {
+        $persona = Personas::find($id);
         $persona->nombre = $request->input('nombre');
         $persona->paterno = $request->input('paterno');
         $persona->materno = $request->input('materno');
         $persona->fecha_nacimiento = $request->input('fecha_nacimiento');
-
-        $telefono->telefono = $request->input('telefono');
         $persona->save();
-        $telefono->save();
 
+        $arrayTelf = explode(",",$request->final);
+        
+
+        foreach ($arrayTelf as $key => $final) {
+            $telefonos= new Telefonos();
+            $telefonos->id_persona = $id;
+            logger($telefonos->telefono =$final);
+            $telefonos->save();
+        }
+        //$persona->telefonos->detach();
         return redirect()->route("personas.index")->with("success","Actualizado con exito");
     }
 
@@ -135,11 +138,14 @@ class PersonasController extends Controller
      */
     public function destroy($id)
     {
-        $personas = personas::find($id);
-        $personas->delete();
+        $numero= Personas::with('telefonos')->where('id',$id);
 
-        return redirect()->route("personas.index")->with("success","Eliminadocon exito");
+        Telefonos::where('id_persona', $id)->delete();
+        $personas = Personas::find($id);
+        $personas->delete();
+        return redirect()->route("personas.index")->with("success","Eliminado con exito");
     }
 }
+
 
 

@@ -22,7 +22,6 @@ class CreatePersonasTable extends Migration
             $table->string('materno');
             $table->date('fecha_nacimiento');
             $table->timestamps();
-
         });
     }
 
@@ -36,5 +35,3 @@ class CreatePersonasTable extends Migration
         Schema::dropIfExists('personas');
     }
 }
-
-
