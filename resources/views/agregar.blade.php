@@ -45,18 +45,18 @@
         </div>    
             
         <div class="col-5">
-          <input type="text"  name="telefonos" id="telefonos" class="form-control" >
+          <input type="hidden"  name="telefonos" id="telefonos" class="form-control" >
         </div>    
       </div>
   </div>              
 
- <div class="row">
-  <div class="col-sm-8">
-    <div class="card">
-      <div class="container text-white bg-light">
+ <div class="row  ">
+  <div class="col-sm-5 ">
+    <div class="card ">
+      <div class="container text-black bg-light ">
         <p>
           <label class="btn btn-warning" id="agregar">
-            <spam class="fas fa-plus-square text-align-center" ></spam> Agregar telefono
+            <spam class="fas fa-plus-square text-align-center " ></spam> Agregar telefono
           </label>
 
           <div class="card bg-light border-light  ">

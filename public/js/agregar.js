@@ -14,11 +14,12 @@ let total = 1;
  */
 btnAgregar.addEventListener('click', e => {
     let div = document.createElement('div');
-    div.innerHTML = `<label>${total++}</label> <input class="form-control col-sm-5" onkeyup="obtnerTelefonos()" type="text" id="telefono[]" name="telefono[]" placeholder="TELEFONO" required >
-    <button class="btn btn-danger" onclick="eliminar(this)">Eliminar </button> `;
-
+    div.innerHTML = `<label class="text-black">${total++}</label>:
+    <input onkeyup="obtnerTelefonos()" type="text" id="telefono[]" name="telefono[]" placeholder="TELEFONO" required> 
+    <button class="btn btn-danger btn-sm" onclick="eliminar(this)"><i class="fas fa-trash"></i></button>  
+    <br></br>
+    `;
     contenedor.appendChild(div);
-
 })
 
 /*Funcion para obtner los numero cada que se oprime una tecla en el input id=telefono */

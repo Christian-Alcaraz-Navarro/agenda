@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Telefonos extends Model
 {
     use HasFactory;
-    var $array;
+    
     protected $fillable = ['Telefonos'];
 }

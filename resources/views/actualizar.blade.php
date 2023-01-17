@@ -19,7 +19,7 @@
     </div>
 
     <p class="card-text">
-      <form action="{{route('personas.update', ['Personas->id'])}}" method="POST">     
+      <form action="{{route('personas.update', [$personas->id])}}" method="POST">     
         @csrf
         @method("PUT")
 
@@ -56,7 +56,7 @@
           </div>
 
           <div class="col-5">
-            <input type="text" name="telefonos" id="telefonos" class="form-control" >
+            <input type="text"  name="final" id="final" class="form-control" >
           </div> 
     </p>
   </div>
@@ -66,15 +66,21 @@
     <div class="col-sm-5">
       <div class="card">
         <div class="card-body text-center">
-          <label class="btn btn-primary" id="agregar">
+              <label class="btn btn-primary" id="agregar">
             <spam class="fas fa-plus-square text-center " ></spam> Agregar telefono
           </label>
-          <div class="card bg-light border-light  ">
+          
+          @foreach ($personas->telefonos as $telefonosPersona)
+          @if ($telefonosPersona->telefono != null)
+          <input onkeyup="obtnerTelefonos()" type="text" name="telefonos[]" id="telefonos[]" class="form-control col-6" value="{{$telefonosPersona->telefono}}">
+          <br>
+          @endif
+          @endforeach
+          <div class="card  border-light  ">
             <div class="container">
               <p class="card-text">
-                <div  id="dinamic"  " name="telefono">
-                </div>
-                <script src="/js/editar.js"></script>
+                <div  id="dinamic" name="telefonos"></div>
+                
               </p>
             </div>  
           </div>
@@ -109,4 +115,5 @@
 </div> 
 
 </div>
+<script src="/js/editar.js"></script>
 @endsection

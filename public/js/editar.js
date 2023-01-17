@@ -14,8 +14,11 @@ let total = 1;
  */
 btnAgregar.addEventListener('click', e => {
     let div = document.createElement('div');
-    div.innerHTML = `<label>${total++}</label> <input class="form-control col-sm-5" onkeyup="obtnerTelefonos()" type="text" id="telefonos[]" name="telefonos[]" placeholder="TELEFONO" required >
-    <button class="btn btn-danger" onclick="eliminar(this)">Eliminar </button> `;
+    div.innerHTML = `<label class="text-black">${total++}</label>:
+    <input onkeyup="obtnerTelefonos()" type="text" id="telefonos[]" name="telefonos[]" class="form-control"placeholder="TELEFONO" required> 
+    <button class="btn btn-danger btn-sm" onclick="eliminar(this)"><i class="fas fa-trash"></i></button>  
+    <br></br>
+    `;
 
     contenedor.appendChild(div);
 
@@ -28,8 +31,10 @@ function obtnerTelefonos(){
               .map(function(){return $(this).val();}).get();
     //Crear una cadena de texto con los numeros de los inputs id=telefono y separarlos con una coma
     var txtTelefonos = values.toString();
+    console.log("values ", values);
+    console.log(txtTelefonos);
     //Asignamos mediante Jquery la cadena de texto al input del formulario agregar persona para enviar al back
-    $("#telefonos").val(txtTelefonos);
+    $("#final").val(txtTelefonos);
 }
 
 /**

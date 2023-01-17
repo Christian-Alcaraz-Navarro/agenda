@@ -16,10 +16,9 @@
   </div>
 
   @section('contenido')
-
   <div class="card-body">
     <div class="row">
-     <div class="col sm-12">
+     <div class="col">
        @if ($mensaje = Session::get('success') )
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
             {{$mensaje}}
@@ -36,6 +35,7 @@
       </div>
     </div>
   </div>
+  {{$maximot}}
   <div class="table table-responsive">
     <table class="table table-hover">
       <thead>
@@ -44,10 +44,11 @@
         <th scope="col">Apellido paterno </th>
         <th scope="col">Apellido Materno </th>
         <th scope="col">Fecha de nacimiento </th>
-            
-        <th scope="col">Telefono</th>
-        <th scope="col">Telefono</th>
-        <th scope="col">Telefono</th>  
+          
+        @for ($contador=1; $contador<=$maximot; $contador++)
+         <th scope="col">Telefono {{$contador}}</th>
+        @endfor
+        
 
         <th scope="col">Editar </th>
         <th scope="col">Eliminar </th>
@@ -61,16 +62,24 @@
             <td>{{$datosPersonas->paterno}} </td>
             <td>{{$datosPersonas->materno}} </td>
             <td>{{$datosPersonas->fecha_nacimiento}} </td>
-
-
-            @foreach ($telefonos as $telefonosPersona){
+            
+            @php 
+            $total=1;
+            @endphp  
+            
+            @foreach ($telefonos as $telefonosPersona)  
               @if($datosPersonas->id==$telefonosPersona->id_persona)
-              {                
                 <td>{{$telefonosPersona->telefono}}</td>
-              }
+                @php
+                  $total++;
+                @endphp            
               @endif
             @endforeach
-
+            
+            @for ($total=$total; $total<=$maximot; $total++)
+              <td> </td>
+            @endfor
+            
             <td>
               <form action="{{route("personas.edit", [$datosPersonas->id])}}" method="GET">
                 <button class="btn btn-warning btn-sm">
@@ -94,9 +103,17 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      {{-- //{{$datos->links()}} --}}
+      {{-- {{$datos->links()}} --}}
     </div>
   </div>
 </div>
+@endsection
+@section('css')
+<style>
+  .container{
+    max-width: 1600px;
+  }
+
+</style>  
 @endsection
 

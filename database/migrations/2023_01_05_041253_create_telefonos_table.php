@@ -18,6 +18,7 @@ class CreateTelefonosTable extends Migration
             $table->id();
             $table->foreignId('id_persona')->nullable()->references('id')->on('personas');
             $table->string('telefono')->nullable();
+            $table->integer('cantidad_numeros');
             $table->timestamps();
         });
 

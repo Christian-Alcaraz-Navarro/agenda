@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Personas extends Model
 {
-    
+    protected $table = "personas"; //nombre de la tabla en la BD
+    //campos que poueden ser alterados desde la app
+    protected $fillable = ['telefono', 'nombre', 'paterno', 'materno', 'fecha_nacimiento'];
     public function telefonos()
     {
-     //user profile es tabla padre y user id nombre del campo de llave foranea
+     //  Relacion uno a muchos id_persona nombre de la llave foranea en tabla telefonos
         return $this->hasMany(Telefonos::class,'id_persona');
         
     }
-    protected $fillable = ['telefono'];
+    
 }
